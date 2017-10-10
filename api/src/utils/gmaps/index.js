@@ -29,7 +29,7 @@ const getFastestDrive = function*(pins) {
     const destination = pins.pop()
     const waypoints = pins
     const units = config.gmaps.units
-    const opts = { origin, destination, waypoints, units }
+    const opts = { origin, destination, waypoints, units, optimize: true }
 
     const response = yield util.promisify(client.directions)(opts)
     // handle google response
