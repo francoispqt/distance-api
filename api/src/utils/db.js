@@ -3,8 +3,12 @@ const config = require('../config')
 
 mongoose.Promise = global.Promise
 
+/**
+* Is used to reconnect because docker launches the API
+* before the database is fully initiated when setting a user 
+*/
 const connectWithRetry = function(tries, resolve, reject) {
-    if (tries > 30) return reject(new Error('Cannot start db'))
+    if (tries >= 30) return reject(new Error('Cannot start db'))
     return mongoose
         .connect(config.db.conn, { useMongoClient: true }, err => {
             if (err) {
