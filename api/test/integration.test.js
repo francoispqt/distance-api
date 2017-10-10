@@ -7,8 +7,8 @@ if (!process.env.GMAPS_API_KEY) {
 
 const chai = require('chai')
 const chaiHTTP = require('chai-http')
-const app = require('../')
-const db = require('../utils/db')
+const app = require('../src/')
+const db = require('../src/utils/db')
 
 const expect = chai.expect
 

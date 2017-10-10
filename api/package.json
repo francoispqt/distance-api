@@ -4,7 +4,7 @@
   "description": "Calculates time and distance between start points, end point and wayouts",
   "main": "src/index.js",
   "scripts": {
-    "test": "istanbul cover _mocha ./src/test",
+    "test": "istanbul cover _mocha ./test",
     "start": "node src/index.js"
   },
   "author": "Francois Parquet",

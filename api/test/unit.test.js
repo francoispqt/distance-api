@@ -8,9 +8,9 @@ if (!process.env.GMAPS_API_KEY) {
 const sinon = require('sinon')
 const chai = require('chai')
 
-const validation = require('../utils/validation')
-const googleMaps = require('../utils/gmaps')
-const errors = require('../utils/errors')
+const validation = require('../src/utils/validation')
+const googleMaps = require('../src/utils/gmaps')
+const errors = require('../src/utils/errors')
 
 const Joi = validation.Joi
 const googleMapsClient = googleMaps.client
