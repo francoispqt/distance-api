@@ -18,6 +18,7 @@ const googleMapsClient = googleMaps.client
 const expect = chai.expect
 
 describe('getFastestDrive', () => {
+    // Prepare stubs for google maps client directions
     beforeEach(() => {
         sinon.stub(googleMapsClient, 'directions').callsArgWithAsync(1, null, {
             json: {
@@ -56,10 +57,12 @@ describe('getFastestDrive', () => {
         })
     })
 
+    // Clear stubs for google maps client directions
     afterEach(() => {
         googleMapsClient.directions.restore()
     })
 
+    // Run test
     it('It should return a result with {status: "success", total_distance: 5, total_time: 4 }', done => {
         googleMaps
             .getFastestDrive([
@@ -78,6 +81,7 @@ describe('getFastestDrive', () => {
 
 
 describe('validationMiddleware', () => {
+    // Prepare stubs for errorResponse and Joi.Validate
     beforeEach(() => {
         const { error, value } = Joi.validate({ test: 1 }, { test: Joi.string().required() })
         sinon.stub(validation.Joi, 'validate')
@@ -92,6 +96,7 @@ describe('validationMiddleware', () => {
         })
     })
 
+    // Clear stubs
     afterEach(() => {
         validation.Joi.validate.restore()
         errors.errorResponse.restore()

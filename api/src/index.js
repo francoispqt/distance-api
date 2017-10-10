@@ -8,9 +8,14 @@ const bodyParser = require('body-parser')
 const db = require('./utils/db')
 
 app.use(bodyParser.json())
+
+// Load the routes
 routes(app)
+
+// Default error handler, to avoir unhandled errors
 app.use(errors.errorResponseMW)
 
+// start db, wait for connecton to be open to start app
 db
 .init()
 .then(() => {

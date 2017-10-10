@@ -19,24 +19,17 @@ const errorResponseMW = function(error, req, res, next) {
     // eslint-disable-next-line
     console.error(error, 'err')
     if (!res.headersSent) {
-        try {
-            const status = config.errors.status
-            let message = config.errors.message
-            let statusCode = config.errors.statusCode
-            if (error instanceof DefaultError) {
-                statusCode = error.statusCode || statusCode
-                message = error.message || message
-            }
-            return res.status(statusCode).send({
-                status,
-                error: message,
-            })
-        } catch (e) {
-            return res.status(500).send({
-                status: config.errors.status,
-                error: e.message || config.errors.message,
-            })
+        const status = config.errors.status
+        let message = config.errors.message
+        let statusCode = config.errors.statusCode
+        if (error instanceof DefaultError) {
+            statusCode = error.statusCode || statusCode
+            message = error.message || message
         }
+        return res.status(statusCode).send({
+            status,
+            error: message,
+        })
     }
 }
 
