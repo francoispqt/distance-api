@@ -17,7 +17,7 @@ const ValidationError = defError('ValidationError')
 const errorResponseMW = function(error, req, res, next) {
     // should use a logger
     // eslint-disable-next-line
-    console.error(error, 'err')
+    console.error(error)
     if (!res.headersSent) {
         const status = config.errors.status
         let message = config.errors.message
