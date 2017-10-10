@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  ## node API
+  api:
+    build: ${PWD}/api
+    ports:
+     - "8080:8080"
+    depends_on:
+     - database
+    environment: 
+     PORT: 8080
+     MONGO_CONN: "mongodb://database:27017/distance"
+     GMAPS_API_KEY: ${GMAPS_API_KEY}
+    links:
+     - database:database
+    command: npm start
+
+  ## Postgres DB
+  database:
+    image: mongo:3.4
+    ports: 
+      - "0.0.0.0:27017:27017"

@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  ## node API
+  api:
+    build: ${PWD}/api
+    ports:
+     - "8080:8080"
+    depends_on:
+     - database
+    environment: 
+     PORT: ${PORT}
+     MONGO_CONN: "mongodb://${DB_USER}:${DB_PASSWORD}@database:27017"
+     GMAPS_API_KEY: ${GMAPS_API_KEY}
+     DB_USER: ${DB_USER}
+     DB_PASSWORD: ${DB_PASSWORD}
+    links:
+     - database:database
+    command: npm start
+
+  ## Postgres DB
+  database:
+    image: mongo:3.4
+    environment: 
+     MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+     MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
