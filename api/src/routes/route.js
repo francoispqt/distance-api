@@ -29,7 +29,7 @@ const getShortestDriving = function*(req, res) {
     const r = yield Route.findOne({ token })
 
     // if no result found,
-    if (!r) return errors.errorResponse(res, config.errors.notFound)
+    if (!r) return errors.errorResponse(res, config.errors.notFound, 404)
 
     // check if r is successful
     // if yes respond, this coupled with the expire on the model works as cache
