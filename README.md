@@ -1,32 +1,33 @@
 # DISTANCE API
 Test api to get shortest way for a given route
 
-# get the api
+## Get started
+### Clone the api
 ```bash
 $ git clone https://github.com/francoispqt/distance-api
 ```
 
-# API KEY
+### Set you API key
 set your env var GMAPS_API_KEY to you API key
 ```bash
 $ export GMAPS_API_KEY=<YOUR_API_KEY>
 ```
 
-# run in docker
+### Run in docker
 *you need a docker-compose 2.xx*
-## start
+#### start
 ```bash
 $ cd distance-api
 $ docker-compose up -d
 ```
 
-## tests
+#### tests
 ```bash
 $ cd distance-api
 $ docker-compose -f docker-compose.yml -f docker-compose.test.yml up
 ```
 
-## Make commands
+#### Make commands
 ```bash
 $ make # run for dev 
 $ make test # run tests
@@ -35,8 +36,8 @@ $ make prod # run for prod
 $ make build-prod # rm the containers and rebuild
 ```
 
-# without docker
-## start
+### without docker
+#### start
 ```bash
 $ cd distance-api/api
 $ npm i
@@ -49,7 +50,7 @@ $ npm i
 $ npm test
 ```
 
-## Routes
+#### Routes
 *POST/route*
 request body: 
 ```json
