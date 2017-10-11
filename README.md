@@ -8,7 +8,7 @@ uses Node.js express and generator wrappers + MongoDB
 $ git clone https://github.com/francoispqt/distance-api
 ```
 
-### Set you API key
+### Set your API key
 set your env var GMAPS_API_KEY to you API key
 ```bash
 $ export GMAPS_API_KEY=<YOUR_API_KEY>
@@ -30,7 +30,7 @@ $ docker-compose -f docker-compose.yml -f docker-compose.test.yml up
 
 #### Make commands
 ```bash
-$ make # run for dev 
+$ make # run for dev (docker)
 $ make test # run tests
 $ make build-test # rm the containers and rebuild
 $ make prod # run for prod
