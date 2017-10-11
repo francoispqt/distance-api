@@ -21,6 +21,8 @@ services:
   ## Mongo DB
   database:
     image: mongo:3.4
+    volumes:
+     - ${PWD}/mongodb/data:/data/db
     environment: 
      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
