@@ -7,7 +7,8 @@ const validationMW = require('../utils/validation').MW
 const Route = require('../models/route')
 
 /**
- * submitRoute saves a route taking an array for [lat,lng]
+ * submitRoute saves a route taking an array of [lat,lng]
+ * example: [[0.0,0.0], [0.1,0.3], [0.2,0.4]]
  * @param {request} req the express request
  * @param {response} res the express response
  * @return {object} an object with the route token { token }

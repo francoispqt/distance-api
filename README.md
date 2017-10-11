@@ -1,5 +1,6 @@
 # DISTANCE API
-Test api to get shortest way for a given route
+Test api to get shortest way for a given route, 
+uses Node.js express and generator wrappers + MongoDB
 
 ## Get started
 ### Clone the api

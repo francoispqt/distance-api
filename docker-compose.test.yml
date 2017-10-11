@@ -18,7 +18,7 @@ services:
      - database:database
     command: npm test
 
-  ## Postgres DB
+  ## Mongo DB
   database:
     image: mongo:3.4
     logging:

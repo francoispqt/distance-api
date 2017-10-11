@@ -16,7 +16,7 @@ services:
      - database:database
     command: npm start
 
-  ## Postgres DB
+  ## Mongo DB
   database:
     image: mongo:3.4
     ports: 
