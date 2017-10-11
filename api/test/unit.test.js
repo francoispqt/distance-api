@@ -102,7 +102,7 @@ describe('validationMiddleware', () => {
         errors.errorResponse.restore()
     })
 
-    it('It should return a result with {status: "success", total_distance: 5, total_time: 4 }', done => {
+    it('It should return a result with validation error message', done => {
         const req = { body: { test: 1 } }
         const r = validation.MW({ body: { test: Joi.string().required() } })(req, {}, () => {})
         expect(r.message[0]).to.equal('"test" must be a string')
