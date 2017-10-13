@@ -105,23 +105,11 @@ const getFastestDrive = function*(pins) {
     }
     const response = yield util.promisify(client.distanceMatrix)(opts)
 
-    // handle errors
-    // matrix errors need to be handled by points
-    // matrix will return ok even if a point is in the middle of the pacific ocean
-    if (gmapsErrors[response.json.status]) {
-        const gmapErr = gmapsErrors[response.json.status]
-        const msg = gmapErr.message || config.errors.message
-        throw new errors.GmapsError(msg, {
-            response: {
-                status: config.errors.status,
-                message: msg,
-            },
-        })
-    }
-
     const rows = response.json.rows
     // Checking if has error, could and should be improved
     // test possibility of a road even if some combos have no results
+    // matrix errors need to be handled by points
+    // matrix will return ok even if a point is in the middle of the pacific ocean
     checkErrors(rows)
 
     // make arrays from keys and remove first one ex: [1,2,3]
