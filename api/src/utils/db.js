@@ -5,7 +5,11 @@ mongoose.Promise = global.Promise
 
 /**
 * Is used to reconnect because docker launches the API
-* before the database is fully initiated when setting a user 
+* before the database is fully initiated when setting a user
+* @param {number} tries Number of attemps to connect
+* @param {function} resolve the promise resolution
+* @param {function} reject the promise rejection
+* @return {Promise} returns a connection promise
 */
 const connectWithRetry = function(tries, resolve, reject) {
     if (tries >= 30) return reject(new Error('Cannot start db'))
@@ -23,7 +27,7 @@ const connectWithRetry = function(tries, resolve, reject) {
         })
         .catch(error => {
             // eslint-disable-next-line
-            console.log(error.message, 'retrying to connect in 1s')
+            console.error(error.message)
             setTimeout.bind(
                 null,
                 connectWithRetry.bind(null, tries + 1, resolve, reject),

@@ -75,27 +75,30 @@ describe('The API', () => {
                     const token = res.body.token
                     expect(token).to.be.ok // eslint-disable-line
                     expect(res).to.have.status(200)
-                    testToken(
-                        token,
-                        (err, res) => { // eslint-disable-line
-                            expect(res.body.status).to.equal('success')
-                            expect(res.body.total_time).to.not.be.null // eslint-disable-line
-                            expect(res.body.total_distance).not.be.null // eslint-disable-line
-                            expect(res).to.have.status(200)
-                        },
-                        () => {
-                            testToken(
-                                token,
-                                (err, res) => { // eslint-disable-line
-                                    expect(res.body.status).to.equal('success')
-                                    expect(res.body.total_time).to.not.be.null // eslint-disable-line
-                                    expect(res.body.total_distance).not.be.null // eslint-disable-line
-                                    expect(res).to.have.status(200)
-                                },
-                                done
-                            )
-                        }
-                    )
+                    // run this one in timeout to let time to get answer from google api
+                    setTimeout(() => {
+                        testToken(
+                            token,
+                            (err, res) => { // eslint-disable-line
+                                expect(res.body.status).to.equal('success')
+                                expect(res.body.total_time).to.not.be.null // eslint-disable-line
+                                expect(res.body.total_distance).not.be.null // eslint-disable-line
+                                expect(res).to.have.status(200)
+                            },
+                            () => {
+                                testToken(
+                                    token,
+                                    (err, res) => { // eslint-disable-line
+                                        expect(res.body.status).to.equal('success')
+                                        expect(res.body.total_time).to.not.be.null // eslint-disable-line
+                                        expect(res.body.total_distance).not.be.null // eslint-disable-line
+                                        expect(res).to.have.status(200)
+                                    },
+                                    done
+                                )
+                            }
+                        )
+                    }, 1000)
                 })
         })
     })

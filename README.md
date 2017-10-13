@@ -8,8 +8,8 @@ uses Node.js express and generator wrappers + MongoDB
 $ git clone https://github.com/francoispqt/distance-api
 ```
 
-### Set your API key
-set your env var GMAPS_API_KEY to you API key
+### Set your API key, it uses the distanceMatrix api
+set your env var GMAPS_API_KEY to your API key
 ```bash
 $ export GMAPS_API_KEY=<YOUR_API_KEY>
 ```

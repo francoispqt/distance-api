@@ -6,7 +6,7 @@ const keyToValidate = ['params', 'query', 'body', 'headers']
 
 /**
  * Validation middleware
- * @param {object} schema the object containg schemas for validation
+ * @param {object} schema the object containing schemas for validation { body: {}, params: {} }
  * @return {function} returns the express middleware for input validation
  */
 const MW = schema => {

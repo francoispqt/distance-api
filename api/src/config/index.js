@@ -10,6 +10,7 @@ exports.server = {
 
 exports.status = {
     success: 'success',
+    failure: 'failure',
 }
 
 exports.tokens = {
@@ -31,6 +32,7 @@ exports.validation = {
 }
 
 exports.gmaps = {
+    maxRetries: 2,
     apiKey: process.env.GMAPS_API_KEY,
     units: 'metric',
 }

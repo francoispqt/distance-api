@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const co = require('co')
 const config = require('../config')
 const errors = require('../utils/errors')
 const handler = require('../utils/handler')
@@ -15,7 +16,33 @@ const Route = require('../models/route')
  */
 const submitRoute = function*(req, res) {
     const r = yield Route.create({ path: req.body })
-    return res.send({ token: r.token })
+
+    // send response and call google's api after
+    res.send({ token: r.token })
+
+    // get result from google
+    // if throws error update route document with status and error
+    try {
+        const gmapsRes = yield GMaps.getFastestDrive(r.path)
+        yield r.update(gmapsRes)
+    } catch (error) {
+        const u = {
+            status: config.status.failure,
+            error: error.message,
+        }
+        if (
+            error instanceof errors.GmapsError &&
+            error.response &&
+            error.response.status
+        ) {
+            u.status = error.response.status
+            u.error = error.response.message
+        }
+        yield r.update(u)
+
+        // throw error, let the middleware deal with it
+        throw error
+    }
 }
 
 /**
@@ -28,36 +55,21 @@ const submitRoute = function*(req, res) {
 const getShortestDriving = function*(req, res) {
     const token = req.params.token
     const r = yield Route.findOne({ token })
-
     // if no result found,
     if (!r) return errors.errorResponse(res, config.errors.notFound, 404)
-
-    // check if r is successful
-    // if yes respond, this coupled with the expire on the model works as cache
-    if (r.status && r.status === 'success') {
-        return res.send(r)
+    // if does not have a status and hasnt exceed the retries allowed rerun the request
+    // this is use to prevent a call done too fast after retrieving the token
+    // and gmaps call has not resolved yet
+    if (!r.status && (!req.retries || req.retries < config.gmaps.maxRetries)) {
+        req.retries = req.retries || 0
+        req.retries++
+        return setTimeout(() => {
+            return co.wrap(getShortestDriving)(req, res)
+        }, 500)
     }
-
-    // get result from google
-    const gmapsRes = yield GMaps.getFastestDrive(r.path).catch(error => {
-        if (error instanceof errors.GmapsError) {
-            const statusCode = error.statusCode || 400
-            let message
-            let status
-            if (error.response) {
-                message = error.response.message || message
-                status = error.response.status || status
-            }
-            errors.errorResponse(res, message, statusCode, status)
-        }
-        throw error
-    })
-
-    yield r.update(gmapsRes)
-    Object.assign(r, gmapsRes)
-
-    // send the response
-    return res.send(r)
+    // if has status and status is 'success' send r and code 200
+    // else send r with status 400
+    return r.status === 'success' ? res.send(r) : res.status(400).send(r)
 }
 
 module.exports = app => {

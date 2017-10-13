@@ -17,7 +17,8 @@ const RouteSchema = new db.Schema({
     path: [
         [Number],
     ],
-    status: { type: String },
+    status: String,
+    error: String,
     total_distance: Number,
     total_time: Number,
 })
