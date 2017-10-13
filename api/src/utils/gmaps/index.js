@@ -139,7 +139,7 @@ const getFastestDrive = function*(pins) {
     const result = {
         total_distance: best.metrics.distance,
         total_time: best.metrics.duration,
-        status: 'success',
+        status: config.status.success,
         path: bestFullPath,
     }
 
