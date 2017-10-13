@@ -65,6 +65,30 @@ const getPathsFromPerms = function*(perms, rows) {
 }
 
 /**
+ * Checks errors in google distance matrix response
+ * @param {array} rows rows result from gmaps distance matrix api
+ */
+const checkErrors = (rows) => {
+    rows.forEach(r => {
+        if (
+            r.elements.every(e => {
+                return gmapsErrors[e.status] !== undefined
+            })
+        ) {
+            // throw err, no route available for this pin
+            const gmapErr = gmapsErrors[r.elements[0].status]
+            const msg = gmapErr.message || config.errors.message
+            throw new errors.GmapsError(msg, {
+                response: {
+                    status: config.errors.status,
+                    message: msg,
+                },
+            })
+        }
+    })
+}
+
+/**
  * Computes the pins and calls the Distance Matrix API
  * Gets all permutations possible after starting point
  * Calc the best way, duration prevails
@@ -96,28 +120,12 @@ const getFastestDrive = function*(pins) {
     }
 
     const rows = response.json.rows
-    // error could and should be improved
+    // Checking if has error, could and should be improved
     // test possibility of a road even if some combos have no results
-    rows.forEach(r => {
-        if (
-            r.elements.every(e => {
-                return gmapsErrors[e.status] !== undefined
-            })
-        ) {
-            // throw err, no route available for this pin
-            const gmapErr = gmapsErrors[r.elements[0].status]
-            const msg = gmapErr.message || config.errors.message
-            throw new errors.GmapsError(msg, {
-                response: {
-                    status: config.errors.status,
-                    message: msg,
-                },
-            })
-        }
-    })
+    checkErrors(rows)
 
     // make arrays from keys and remove first one ex: [1,2,3]
-    const arr = Array.from(pins.keys()).slice(1) 
+    const arr = Array.from(pins.keys()).slice(1)
     // get all permuations
     // uses heaps algorithm
     const perms = Array.from(permute(arr))
