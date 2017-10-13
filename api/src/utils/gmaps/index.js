@@ -116,15 +116,14 @@ const getFastestDrive = function*(pins) {
         }
     })
 
-    // make arrays from keys and remove first one
-    const arr = Array.from(pins.keys()).slice(1)
+    // make arrays from keys and remove first one ex: [1,2,3]
+    const arr = Array.from(pins.keys()).slice(1) 
     // get all permuations
     // uses heaps algorithm
     const perms = Array.from(permute(arr))
 
-    // explicitely set to undefined for readability
+    // get the best from all permuations
     let best
-
     // checking all perms
     for (const d of getPathsFromPerms(perms, rows)) {
         if (best === undefined || d.metrics.duration < best.metrics.duration) {
