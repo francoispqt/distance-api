@@ -68,8 +68,17 @@ const getPathsFromPerms = function*(perms, rows) {
  * Checks errors in google distance matrix response
  * @param {array} rows rows result from gmaps distance matrix api
  */
-const checkErrors = (rows) => {
-    rows.forEach(r => {
+const checkErrors = response => {
+    if (response.json.status !== config.gmaps.OK) {
+        throw new errors.GmapsError(response.json.status, {
+            response: {
+                status: config.errors.status,
+                message: response.json.status,
+            },
+        })
+    }
+
+    response.json.rows.forEach(r => {
         if (
             r.elements.every(e => {
                 return gmapsErrors[e.status] !== undefined
@@ -105,12 +114,14 @@ const getFastestDrive = function*(pins) {
     }
     const response = yield util.promisify(client.distanceMatrix)(opts)
 
-    const rows = response.json.rows
     // Checking if has error, could and should be improved
     // test possibility of a road even if some combos have no results
     // matrix errors need to be handled by points
     // matrix will return ok even if a point is in the middle of the pacific ocean
-    checkErrors(rows)
+    // will throw if encounters an error
+    checkErrors(response)
+
+    const rows = response.json.rows
 
     // make arrays from keys and remove first one ex: [1,2,3]
     const arr = Array.from(pins.keys()).slice(1)

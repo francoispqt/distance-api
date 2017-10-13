@@ -32,6 +32,7 @@ exports.validation = {
 }
 
 exports.gmaps = {
+    OK: 'OK',
     maxRetries: 2,
     apiKey: process.env.GMAPS_API_KEY,
     units: 'metric',
