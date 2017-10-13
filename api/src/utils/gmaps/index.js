@@ -39,6 +39,7 @@ function* permute(a, n = a.length) {
  * @param {number} index current row index
  * @param {number} permI current permutation index
  * @param {object} result computed result
+ * @returns {object} 
  */
 const getPathFromPerm = (
     perm,
@@ -66,7 +67,8 @@ const getPathsFromPerms = function*(perms, rows) {
 
 /**
  * Checks errors in google distance matrix response
- * @param {array} rows rows result from gmaps distance matrix api
+ * @param {object} response rows result from gmaps distance matrix api
+ * @throws {Error} throws an error if a known Gmaps error is encountered
  */
 const checkErrors = response => {
     if (response.json.status !== config.gmaps.OK) {
